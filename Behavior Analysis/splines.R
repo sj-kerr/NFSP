@@ -1,0 +1,15 @@
+setwd("C:/Users/sjker/Desktop/NFSP_data")
+library("dplyr")
+library(ggplot2)
+library(dplyr)
+library(zoo)
+library(tidyr)
+# #install.packages("ssh")
+library(ssh)
+
+session <- ssh_connect("sjkerr@kndy.biology.colostate.edu")
+result <- ssh_exec_internal(session, "cat /home/dio3/williamslab/SarahKerr/AccelRaw/A_0000_S1.csv") 
+# Write to a temporary file and read
+temp_file <- tempfile(fileext = ".csv")
+writeBin(result$stdout, temp_file)
+bigdata <- readr::read_csv(temp_file, num_threads = 16)
